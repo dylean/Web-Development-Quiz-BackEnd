@@ -3,7 +3,6 @@ package com.thoughtworks.rslist.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.rslist.domain.Goods;
 import com.thoughtworks.rslist.dto.GoodsDto;
-import com.thoughtworks.rslist.dto.OrderDto;
 import com.thoughtworks.rslist.repository.GoodsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +30,7 @@ class GoodsControllerTest {
 
     @BeforeEach
     void setUp() {
+        goodsRepository.deleteAll();
         goodsRepository.save(GoodsDto.builder()
                 .goodsName("阔乐")
                 .price("2.5")
