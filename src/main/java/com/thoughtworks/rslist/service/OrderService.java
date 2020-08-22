@@ -1,6 +1,5 @@
 package com.thoughtworks.rslist.service;
 
-import com.thoughtworks.rslist.domain.Order;
 import com.thoughtworks.rslist.dto.GoodsDto;
 import com.thoughtworks.rslist.dto.OrderDto;
 import com.thoughtworks.rslist.repository.GoodsRepository;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,18 +17,9 @@ public class OrderService {
     @Autowired
     GoodsRepository goodsRepository;
 
-    public ResponseEntity<List<Order>> getOrder() {
+    public ResponseEntity<List<OrderDto>> getOrder() {
         List<OrderDto> all = orderRepository.findAll();
-        List<Order> orders = new ArrayList<>();
-        for (OrderDto orderDto : all) {
-            orders.add(Order.builder()
-                    .count(orderDto.getCount())
-                    .goodsName(orderDto.getGoodsName())
-                    .price(orderDto.getPrice())
-                    .unit(orderDto.getUnit())
-                    .build());
-        }
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(all);
     }
 
     public ResponseEntity addToOrder(int goodsId) {

@@ -1,6 +1,7 @@
 package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.domain.Goods;
+import com.thoughtworks.rslist.dto.GoodsDto;
 import com.thoughtworks.rslist.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class GoodsController {
     GoodsService goodsService;
 
     @GetMapping("/goods")
-    public ResponseEntity<List<Goods>> getAllGoods(){
+    public ResponseEntity<List<GoodsDto>> getAllGoods(){
         return goodsService.getAllGoods();
     }
     

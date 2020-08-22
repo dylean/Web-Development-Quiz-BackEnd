@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,17 +14,9 @@ public class GoodsService {
     @Autowired
     GoodsRepository goodsRepository;
 
-    public ResponseEntity<List<Goods>> getAllGoods() {
+    public ResponseEntity<List<GoodsDto>> getAllGoods() {
         List<GoodsDto> all = goodsRepository.findAll();
-        List<Goods> goodsList = new ArrayList<>();
-        for (GoodsDto cur : all)
-            goodsList.add(Goods.builder()
-                    .goodsName(cur.getGoodsName())
-                    .price(cur.getPrice())
-                    .unit(cur.getUnit())
-                    .goodsUrl(cur.getGoodsUrl())
-                    .build());
-        return ResponseEntity.ok(goodsList);
+        return ResponseEntity.ok(all);
     }
 
     public ResponseEntity addGoods(Goods goods) {

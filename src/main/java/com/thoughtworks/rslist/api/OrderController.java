@@ -1,6 +1,7 @@
 package com.thoughtworks.rslist.api;
 
 import com.thoughtworks.rslist.domain.Order;
+import com.thoughtworks.rslist.dto.OrderDto;
 import com.thoughtworks.rslist.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping("/order")
-    public ResponseEntity<List<Order>> getAllOrders() {
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
         return orderService.getOrder();
     }
 

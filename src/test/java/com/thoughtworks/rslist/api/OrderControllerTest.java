@@ -54,7 +54,7 @@ class OrderControllerTest {
 
     }
 
-//    @AfterEach
+    @AfterEach
     void tearDown() {
         orderRepository.deleteAll();
     }
