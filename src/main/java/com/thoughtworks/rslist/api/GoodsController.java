@@ -5,6 +5,8 @@ import com.thoughtworks.rslist.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,5 +19,10 @@ public class GoodsController {
     @GetMapping("/goods")
     public ResponseEntity<List<Goods>> getAllGoods(){
         return goodsService.getAllGoods();
+    }
+    
+    @PostMapping("/goods")
+    public ResponseEntity add(@RequestBody Goods goods){
+        return goodsService.addGoods(goods);
     }
 }

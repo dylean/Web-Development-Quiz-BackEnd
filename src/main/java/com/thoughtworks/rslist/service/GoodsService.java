@@ -27,4 +27,19 @@ public class GoodsService {
                     .build());
         return ResponseEntity.ok(goodsList);
     }
+
+    public ResponseEntity addGoods(Goods goods) {
+        GoodsDto goodsDto = goodsRepository.findByGoodsName(goods.getGoodsName());
+        if (goodsDto != null) {
+            return ResponseEntity.badRequest().build();
+        }
+        GoodsDto build = GoodsDto.builder()
+                .unit(goods.getUnit())
+                .price(goods.getPrice())
+                .goodsName(goods.getGoodsName())
+                .goodsUrl(goods.getGoodsUrl())
+                .build();
+        goodsRepository.save(build);
+        return ResponseEntity.ok().build();
+    }
 }

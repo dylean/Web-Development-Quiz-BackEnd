@@ -1,5 +1,7 @@
 package com.thoughtworks.rslist.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.rslist.domain.Goods;
 import com.thoughtworks.rslist.dto.GoodsDto;
 import com.thoughtworks.rslist.dto.OrderDto;
 import com.thoughtworks.rslist.repository.GoodsRepository;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.*;
@@ -58,8 +61,21 @@ class GoodsControllerTest {
     @Test
     void shouldGetAllGoods() throws Exception {
         mockMvc.perform(get("/goods"))
-                .andExpect(jsonPath("$[0].goodsName", is("阔乐")));
+                .andExpect(jsonPath("$[0].goodsName", is("阔乐")))
+                .andExpect(status().isOk());
 
         assertEquals(3, goodsRepository.findAll().size());
+    }
+
+    @Test
+    void shouldAddGoodsIfGoodsExist() throws Exception {
+        String json = new ObjectMapper().writeValueAsString(Goods.builder()
+                .unit("罐")
+                .price("2.5")
+                .goodsName("阔乐")
+                .goodsUrl("https://img11.360buyimg.com/n1/jfs/t4705/83/2924377281/70031/aed9bbd3/58f5629dN79b4406c.jpg")
+                .build());
+        mockMvc.perform(post("/goods").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isBadRequest());
     }
 }
