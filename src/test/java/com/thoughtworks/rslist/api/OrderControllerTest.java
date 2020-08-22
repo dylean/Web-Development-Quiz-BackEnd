@@ -14,8 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,7 +54,7 @@ class OrderControllerTest {
 
     }
 
-    @AfterEach
+//    @AfterEach
     void tearDown() {
         orderRepository.deleteAll();
     }
@@ -92,5 +91,30 @@ class OrderControllerTest {
                 .andExpect(status().isCreated());
 
         assertEquals(4, orderRepository.findByGoodsName("王老吉").getCount());
+
+        GoodsDto goodsDto2 = goodsRepository.save(GoodsDto.builder()
+                .goodsName("王老吉2")
+                .price("2.5")
+                .unit("罐")
+                .goodsUrl("https://img11.360buyimg.com/n1/jfs/t4705/83/2924377281/70031/aed9bbd3/58f5629dN79b4406c.jpg")
+                .build());
+        mockMvc.perform(post("/order/"+ goodsDto2.getId()))
+                .andExpect(status().isCreated());
+
+        assertEquals(1, orderRepository.findByGoodsName("王老吉2").getCount());
+    }
+
+    @Test
+    void shouldDeleteOrder() throws Exception{
+        OrderDto save = orderRepository.save(OrderDto.builder()
+                .count(3)
+                .goodsName("可乐2")
+                .price("2.5")
+                .unit("罐")
+                .build());
+
+        mockMvc.perform(delete("/order/"+ save.getId()))
+                .andExpect(status().isCreated());
+
     }
 }

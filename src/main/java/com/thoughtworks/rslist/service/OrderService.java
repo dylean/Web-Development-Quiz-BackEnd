@@ -49,4 +49,9 @@ public class OrderService {
         }
         return ResponseEntity.created(null).build();
     }
+
+    public ResponseEntity deleteGoodsFromOrder(int orderId) {
+        orderRepository.deleteById(orderId);
+        return ResponseEntity.created(null).build();
+    }
 }

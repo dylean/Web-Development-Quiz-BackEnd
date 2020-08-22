@@ -10,4 +10,7 @@ public interface GoodsRepository extends JpaRepository<GoodsDto, Integer> {
 
     @Override
     Optional<GoodsDto> findById(Integer integer);
+
+    @Override
+    void deleteById(Integer integer);
 }

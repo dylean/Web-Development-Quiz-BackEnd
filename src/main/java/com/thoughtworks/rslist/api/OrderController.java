@@ -23,4 +23,9 @@ public class OrderController {
     public ResponseEntity addToOrder(@PathVariable int goodsId){
         return orderService.addToOrder(goodsId);
     }
+
+    @DeleteMapping("/order/{orderId}")
+    public ResponseEntity delete(@PathVariable int orderId){
+        return orderService.deleteGoodsFromOrder(orderId);
+    }
 }
