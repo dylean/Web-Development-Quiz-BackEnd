@@ -1,6 +1,8 @@
 package com.thoughtworks.rslist.api;
 
+import com.thoughtworks.rslist.dto.GoodsDto;
 import com.thoughtworks.rslist.dto.OrderDto;
+import com.thoughtworks.rslist.repository.GoodsRepository;
 import com.thoughtworks.rslist.repository.OrderRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,10 +27,12 @@ class OrderControllerTest {
 
     @Autowired
     OrderRepository orderRepository;
-
+    @Autowired
+    GoodsRepository goodsRepository;
     @BeforeEach
     void setUp() {
         orderRepository.deleteAll();
+        goodsRepository.deleteAll();
         orderRepository.save(OrderDto.builder()
                 .count(3)
                 .goodsName("可乐")
@@ -46,6 +51,8 @@ class OrderControllerTest {
                 .price("2.5")
                 .unit("罐")
                 .build());
+
+
     }
 
     @AfterEach
@@ -62,7 +69,6 @@ class OrderControllerTest {
                 .unit("罐")
                 .build();
         orderRepository.save(build);
-
     }
 
     @Test
@@ -72,5 +78,19 @@ class OrderControllerTest {
                 .andExpect(status().isOk());
 
         assertEquals(3, orderRepository.findAll().size());
+    }
+
+    @Test
+    void shouldAddToOrder() throws Exception {
+        GoodsDto goodsDto = goodsRepository.save(GoodsDto.builder()
+                .goodsName("王老吉")
+                .price("2.5")
+                .unit("罐")
+                .goodsUrl("https://img11.360buyimg.com/n1/jfs/t4705/83/2924377281/70031/aed9bbd3/58f5629dN79b4406c.jpg")
+                .build());
+        mockMvc.perform(post("/order/"+ goodsDto.getId()))
+                .andExpect(status().isCreated());
+
+        assertEquals(4, orderRepository.findByGoodsName("王老吉").getCount());
     }
 }

@@ -40,6 +40,6 @@ public class GoodsService {
                 .goodsUrl(goods.getGoodsUrl())
                 .build();
         goodsRepository.save(build);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 }

@@ -88,7 +88,7 @@ class GoodsControllerTest {
                 .goodsUrl("https://img11.360buyimg.com/n1/jfs/t4705/83/2924377281/70031/aed9bbd3/58f5629dN79b4406c.jpg")
                 .build());
         mockMvc.perform(post("/goods").contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         assertEquals(4, goodsRepository.findAll().size());
     }
